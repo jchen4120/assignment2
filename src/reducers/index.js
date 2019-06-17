@@ -1,51 +1,39 @@
 import { combineReducers } from 'redux';
 
-const INITIAL_TODOS = [
-  {id: 0, message: "watch Endgame", completed: false},
-  {id: 1, message: "have a beach day", completed: false},
-  {id: 2, message: "assignments :(", completed: false}
-]
-
-const todoReducer = (todoItems = INITIAL_TODOS, action) => {
-	if (action.type === 'ADD_TODO') {
-		return [...todoItems, {
-      id: action.id,
-      message: action.message,
-      completed: false
-    }]
-	} else if (action.type === 'DELETE_TODO') {
-    return todoItems.filter(item => item.id !== action.id)
-  } else if (action.type === 'COMPLETE_TODO') {
-    return todoItems.map(item => {
-      if (item.id === action.id) {
-        return {id: item.id, message: item.message, completed: true}
-      } else {
-        return item
-      }
-    })
+const todoReducer = (todoItems = [], action) => {
+	if (action.type === 'ADD_TODO_SUCCESS') {
+		return action.todos;
+	} else if (action.type === 'DELETE_SUCCESS') {
+    return action.todos;
+  } else if (action.type === 'EDIT_SUCCESS') {
+    return action.todos;
+  } else if (action.type === 'FETCH_TODO_LIST') {
+    return action.todos;
   } else {
     return todoItems;
   }
 };
 
-const INITIAL_DETAILEDVIEW = {showDetail: false, message: ''};
-
-const detailedViewReducer = (message = INITIAL_DETAILEDVIEW, action) => {
+const showDetailReducer = (showDetails = false, action) => {
   if (action.type === 'SHOW_DETAILS') {
-    return {
-      showDetail: true,
-      message: action.message
-    };
-  } else if (action.type === 'HIDE_DETAILS') {
-    return INITIAL_DETAILEDVIEW;
+    return true;
   } else {
-    return message;
+    return false;
+  }
+}
+
+const currentItemReducer = (currItem = {}, action) => {
+  if (action.type === 'SHOW_DETAILS') {
+    return action.item;
+  } else {
+    return {id: 0, message: ''};
   }
 }
 
 const reducers = combineReducers({
   todoItems: todoReducer,
-  message: detailedViewReducer
+  showDetail: showDetailReducer,
+  currentItem: currentItemReducer
 });
 
 export default reducers;

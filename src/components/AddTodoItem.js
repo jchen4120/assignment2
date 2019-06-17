@@ -31,11 +31,11 @@ class AddTodoItem extends React.Component {
      return (
        <form className="add-todo" onSubmit={this.addTodoItem}>
          <label>
-           Add an item:
+           Add item:
          </label>
-         <input className="add-todo-input-box" type="text" value={this.state.value} onChange={this.handleChange} />
-         <div className="add-todo-button">
-          <input className="default-button" type="submit" value="Add" />
+         <div className="add-todo-container">
+           <input className="add-todo-input-box" type="text" value={this.state.value} onChange={this.handleChange} />
+           <input className="default-button" type="submit" value="Add" />
          </div>
        </form>
      );

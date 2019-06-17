@@ -1,36 +1,112 @@
-var nextItemId=10
+import axios from 'axios';
+
+export const fetchData = (data) => {
+  return {
+    type: 'FETCH_TODO_LIST',
+    todos: data
+  }
+}
+
+export const fetchTodoListData = () => {
+  return (dispatch) => {
+    return axios.get('http://localhost:9000/todoList')
+      .then(response => {
+        dispatch(fetchData(response.data))
+      }).catch(error => {
+        throw(error);
+      });
+  }
+}
+
+export const addTodoSuccess = (data) => {
+  return {
+    type: 'ADD_TODO_SUCCESS',
+    todos: data
+  }
+}
+
+export const addTodoError = (error) => {
+  return {
+    type: 'ADD_TODO_ERROR',
+    error: error
+  }
+}
 
 export const addTodo = item => {
-  nextItemId++;
+  return (dispatch) => {
+    return axios.post('http://localhost:9000/todoList', {message: item})
+    .then(response => {
+      dispatch(addTodoSuccess(response.data))
+    })
+    .catch(error => {
+      dispatch(error);
+    });
+  };
+}
+
+export const deleteSuccess = (data) => {
   return {
-    type: 'ADD_TODO',
-    id: nextItemId,
-    message: item
+    type: 'DELETE_SUCCESS',
+    todos: data
   }
 }
 
-export const deleteTodo = itemId => {
+export const deleteError = (error) => {
   return {
-    type: 'DELETE_TODO',
-    id: itemId
+    type: 'DELETE_ERROR',
+    error: error
   }
 }
 
-export const completeTodo = itemId => {
-  return {
-    type: 'COMPLETE_TODO',
-    id: itemId
+export const deleteItems = () => {
+  return (dispatch) => {
+    return axios.delete('http://localhost:9000/todoList')
+      .then(response => {
+        dispatch(deleteSuccess(response.data))
+      })
+      .catch(error => {
+        dispatch(deleteError(error));
+      });
   }
+}
+
+export const editSuccess = (data) => {
+  return {
+    type: 'EDIT_SUCCESS',
+    todos: data
+  }
+}
+
+export const editError = (error) => {
+  return {
+    type: 'EDIT_ERROR',
+    error: error
+  }
+}
+
+export const editTodoItem = item => {
+  return (dispatch) => {
+    return axios.post('http://localhost:9000/todoList/edit', {
+      id: item.id,
+      message: item.message
+    })
+    .then(response => {
+      dispatch(editSuccess(response.data))
+    })
+    .catch(error => {
+      dispatch(editError(error));
+    });
+  };
 }
 
 export const showDetailedView = item => {
   return {
     type: 'SHOW_DETAILS',
-    message: item
+    item: item
   }
 }
 
-export const hideDetailedView = item => {
+export const hideDetailedView = () => {
   return {
     type: 'HIDE_DETAILS'
   }

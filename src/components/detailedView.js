@@ -21,7 +21,7 @@ class DetailedView extends React.Component {
 
   editItem(event) {
     this.props.editTodoItem({
-      id: this.props.currentItem.id,
+      id: this.props.currentItem._id,
       message: this.state.value
     });
     this.setState({value: ''});

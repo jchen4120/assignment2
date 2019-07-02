@@ -1,20 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { deleteItems, showDetailedView, fetchTodoListData } from '../actions';
+import { deleteItem, showDetailedView, fetchTodoListData } from '../actions';
 
 class TodoList extends React.Component {
   constructor() {
      super();
      this.editItem = this.editItem.bind(this);
-     this.deleteAll = this.deleteAll.bind(this);
+     this.deleteItem = this.deleteItem.bind(this);
    }
 
    editItem(todoItem) {
      this.props.showDetailedView(todoItem);
    }
 
-   deleteAll() {
-     this.props.deleteItems();
+   deleteItem(todoItem) {
+     this.props.deleteItem(todoItem);
    }
 
    componentDidMount() {
@@ -27,15 +27,15 @@ class TodoList extends React.Component {
         <ul className="list-of-messages">
           {this.props.todoItems.map(item => {
             return (
-              <li className="todo-item" key={item.id}>
+              <li className="todo-item" key={item._id}>
                 <div className="todo-message">* {item.message}</div>
                 <div className="todo-buttons">
                   <button className="list-button" onClick={()=>this.editItem(item)}>edit</button>
+                  <button className="list-button" onClick={()=>this.deleteItem(item)}>delete</button>
                 </div>
               </li>)
           })}
         </ul>
-        <button className={"list-button"} onClick={()=>this.deleteAll()}>clear list</button>
        </div>
      );
    }
@@ -45,4 +45,4 @@ class TodoList extends React.Component {
   return { todoItems: state.todoItems };
 }
 
- export default connect(mapStateToProps, { deleteItems, showDetailedView, fetchTodoListData })(TodoList);
+ export default connect(mapStateToProps, { deleteItem, showDetailedView, fetchTodoListData })(TodoList);

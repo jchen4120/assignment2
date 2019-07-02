@@ -1,40 +1,62 @@
 var express = require('express');
 var router = express.Router();
+var mongoose = require("mongoose");
+var Schema = mongoose.Schema;
 
-var todos = [
-  {id: 0, message: "watch Endgame"},
-  {id: 1, message: "have a beach day"},
-  {id: 2, message: "assignments :("}
-]
+// this will be our data base's data structure
+var todoSchema = new Schema(
+  {
+    message: String
+  },
+  { collection: 'todos' }
+);
 
-var currId = 4;
+var Todo = mongoose.model("Todo", todoSchema);
 
 router.get('/', function(req, res, next) {
-  res.send(JSON.stringify(todos));
+  Todo.find((err, data) => {
+    if (err) {
+      console.log(err);
+    } else {
+      res.send(JSON.stringify(data));
+    }
+  });
 });
 
 router.post('/', function(req, res, next) {
-  currId++;
-  const newTodo = {id: currId, message: req.body.message};
-  todos.push(newTodo);
-  res.send(JSON.stringify(todos));
+  Todo.create({message: req.body.message}, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else {
+      Todo.find((err, data) => {
+        res.send(JSON.stringify(data));
+      });
+    }
+  })
 });
 
 router.delete('/', function(req, res, next) {
-  todos = [];
-  res.send(JSON.stringify(todos));
-});
-
-router.post('/edit', function(req, res, next) {
-  const newTodo = req.body;
-  todos = todos.map(item => {
-    if (item.id === newTodo.id) {
-      return {id: item.id, message: newTodo.message}
+  Todo.deleteOne({_id: req.body.id}, function(err) {
+    if (err) {
+      console.log(err);
     } else {
-      return item
+      Todo.find((err, data) => {
+        res.send(JSON.stringify(data));
+      });
     }
   })
-  res.send(JSON.stringify(todos));
+});
+
+router.put('/edit', function(req, res, next) {
+  Todo.findByIdAndUpdate(req.body.id, {message: req.body.message}, function(err) {
+    if (err) {
+      console.log(err);
+    } else {
+      Todo.find((err, data) => {
+        res.send(JSON.stringify(data));
+      });
+    }
+  })
 })
 
 module.exports = router;

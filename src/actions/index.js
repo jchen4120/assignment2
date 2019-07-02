@@ -58,9 +58,12 @@ export const deleteError = (error) => {
   }
 }
 
-export const deleteItems = () => {
+export const deleteItem = item => {
   return (dispatch) => {
-    return axios.delete('http://localhost:9000/todoList')
+    return axios.delete('http://localhost:9000/todoList', {
+      data: {
+        id: item._id
+      }})
       .then(response => {
         dispatch(deleteSuccess(response.data))
       })
@@ -86,7 +89,7 @@ export const editError = (error) => {
 
 export const editTodoItem = item => {
   return (dispatch) => {
-    return axios.post('http://localhost:9000/todoList/edit', {
+    return axios.put('http://localhost:9000/todoList/edit', {
       id: item.id,
       message: item.message
     })

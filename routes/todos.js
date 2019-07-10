@@ -6,7 +6,8 @@ var mongoose = require("mongoose");
 var todoSchema = mongoose.Schema(
   {
     message: String
-  }
+  },
+  { collection: 'todos' }
 );
 
 var Todo = mongoose.model("Todo", todoSchema);

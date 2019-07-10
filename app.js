@@ -11,7 +11,7 @@ var todoListRouter = require('./routes/todos');
 var app = express();
 
 const dbRoute = 'mongodb+srv://m001-student:m001-mongodb-basics@sandbox-zbhpr.mongodb.net/test?retryWrites=true&w=majority';
-mongoose.connect(dbRoute, { useNewUrlParser: true});
+mongoose.connect(process.env.MONGODB_URI || dbRoute, { useNewUrlParser: true});
 
 let db = mongoose.connection;
 
@@ -32,6 +32,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/todoList', todoListRouter);
+
+if(process.env.NODE_ENV === 'production') {
+  app.use(express.static(path.join(__dirname, 'client', 'build')));
+  app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'build', 'index.html'));
+  })
+}
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -9,7 +9,7 @@ export const fetchData = (data) => {
 
 export const fetchTodoListData = () => {
   return (dispatch) => {
-    return axios.get('http://localhost:9000/todoList')
+    return axios.get('/todoList')
       .then(response => {
         dispatch(fetchData(response.data))
       }).catch(error => {
@@ -34,7 +34,7 @@ export const addTodoError = (error) => {
 
 export const addTodo = item => {
   return (dispatch) => {
-    return axios.post('http://localhost:9000/todoList', {message: item})
+    return axios.post('/todoList', {message: item})
     .then(response => {
       dispatch(addTodoSuccess(response.data))
     })
@@ -60,7 +60,7 @@ export const deleteError = (error) => {
 
 export const deleteItem = item => {
   return (dispatch) => {
-    return axios.delete('http://localhost:9000/todoList', {
+    return axios.delete('/todoList', {
       data: {
         id: item._id
       }})
@@ -89,7 +89,7 @@ export const editError = (error) => {
 
 export const editTodoItem = item => {
   return (dispatch) => {
-    return axios.put('http://localhost:9000/todoList/edit', {
+    return axios.put('/todoList/edit', {
       id: item.id,
       message: item.message
     })

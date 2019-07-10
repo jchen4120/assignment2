@@ -1,10 +1,9 @@
 var express = require('express');
 var router = express.Router();
 var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
 
 // this will be our data base's data structure
-var todoSchema = new Schema(
+var todoSchema = mongoose.Schema(
   {
     message: String
   }

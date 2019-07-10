@@ -11,7 +11,7 @@ var todoListRouter = require('./routes/todos');
 var app = express();
 
 const dbRoute = 'mongodb+srv://m001-student:m001-mongodb-basics@sandbox-zbhpr.mongodb.net/test?retryWrites=true&w=majority';
-mongoose.connect(dbRoute, { useNewUrlParser: true});
+mongoose.connect(process.env.MONGODB_URI || dbRoute, { useNewUrlParser: true});
 
 let db = mongoose.connection;
 

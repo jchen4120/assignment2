@@ -7,8 +7,7 @@ var Schema = mongoose.Schema;
 var todoSchema = new Schema(
   {
     message: String
-  },
-  { collection: 'todos' }
+  }
 );
 
 var Todo = mongoose.model("Todo", todoSchema);
